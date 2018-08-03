@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Digit Recognizer using TensorFlow.js Demo</title>
+	
+	<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+</head>
+<body>
+	<div class="container">
+		<div class="demo-container">
+			<h3>Digit Recognizer using TensorFlow.js Demo</h3>
+			<div class="flex-two">
+				<div id="canvas_box" class="canvas-box">
+					<button id="clear_canvas" class="material-button-pink" onclick="clearCanvas(this.id)">Clear</button>
+				</div>
+				<div id="result_box">
+					<button id="predict_canvas" class="material-button-pink" onclick="predict(this.id)">Predict</button>
+					<canvas id="chart_box"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>  
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+</body>
+</html>
