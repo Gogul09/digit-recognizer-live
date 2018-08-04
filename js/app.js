@@ -8,7 +8,7 @@ var canvasWidth           	= 150;
 var canvasHeight 			= 150;
 var canvasStrokeStyle		= "white";
 var canvasLineJoin			= "round";
-var canvasLineWidth       	= 12;
+var canvasLineWidth       	= 10;
 var canvasBackgroundColor 	= "black";
 var canvasId              	= "canvas";
 
@@ -36,6 +36,26 @@ if(typeof G_vmlCanvasManager != 'undefined') {
 }
 
 ctx = canvas.getContext("2d");
+
+//-----------------------
+// select model handler
+//-----------------------
+$("#select_model").change(function() {
+  	var select_model  = document.getElementById("select_model");
+  	var select_option = select_model.options[select_model.selectedIndex].value;
+
+  	if (select_option == "MLP") {
+  		modelName = "digitrecognizermlp";
+
+  	} else if (select_option == "CNN") {
+  		modelName = "digitrecognizercnn";
+
+  	} else {
+  		modelName = "digitrecognizermlp";
+  	}
+
+  	loadModel(modelName);
+});
 
 //---------------------
 // MOUSE DOWN function
@@ -179,7 +199,7 @@ function clearCanvas(id) {
 //-------------------------------------
 // loader for digitrecognizermlp model
 //-------------------------------------
-async function loadModel() {
+async function loadModel(modelName) {
   console.log("model loading..");
 
   // clear the model variable
@@ -191,33 +211,46 @@ async function loadModel() {
   console.log("model loaded..");
 }
 
-loadModel();
+loadModel(modelName);
 
 //-----------------------------------------------
 // preprocess the canvas to be MLP friendly
 //-----------------------------------------------
 function preprocessCanvas(image, modelName) {
 
-	// resize the input image to digitrecognizermlp's target size of (784, )
-	let tensor = tf.fromPixels(image)
-	    .resizeNearestNeighbor([28, 28])
-	    .mean(2)
-	    .toFloat()
-			.reshape([1 , 784]);
-
 	// if model is not available, send the tensor with expanded dimensions
 	if (modelName === undefined) {
-	return tensor.expandDims();
+		alert("No model defined..")
 	} 
 
-	// if model is digitrecognizermlp, just expand dims
+	// if model is digitrecognizermlp, perform all the preprocessing
 	else if (modelName === "digitrecognizermlp") {
-	return tensor.div(255.0);
-	} 
+		
+		// resize the input image to digitrecognizermlp's target size of (784, )
+		let tensor = tf.fromPixels(image)
+		    .resizeNearestNeighbor([28, 28])
+		    .mean(2)
+		    .toFloat()
+			.reshape([1 , 784]);
+		return tensor.div(255.0);
+	}
+
+	// if model is digitrecognizercnn, perform all the preprocessing
+	else if (modelName === "digitrecognizercnn") {
+		// resize the input image to digitrecognizermlp's target size of (1, 28, 28)
+		let tensor = tf.fromPixels(image)
+		    .resizeNearestNeighbor([28, 28])
+		    .mean(2)
+		    .expandDims(2)
+		    .expandDims()
+		    .toFloat();
+		console.log(tensor.shape);
+		return tensor.div(255.0);
+	}
 
 	// else throw an error
 	else {
-	alert("Unknown model name..")
+		alert("Unknown model name..")
 	}
 }
 
@@ -249,7 +282,7 @@ async function predict() {
 //------------------------------
 var chart = "";
 var firstTime = 0;
-function loadChart(label, data) {
+function loadChart(label, data, modelSelected) {
 	var ctx = document.getElementById('chart_box').getContext('2d');
 	chart = new Chart(ctx, {
 	    // The type of chart we want to create
@@ -259,7 +292,7 @@ function loadChart(label, data) {
 	    data: {
 	        labels: label,
 	        datasets: [{
-	            label: "MLP Prediction",
+	            label: modelSelected + " prediction",
 	            backgroundColor: '#f50057',
 	            borderColor: 'rgb(255, 99, 132)',
 	            data: data,
@@ -276,13 +309,16 @@ function loadChart(label, data) {
 // drawing from canvas
 //----------------------------
 function displayChart(data) {
+	var select_model  = document.getElementById("select_model");
+  	var select_option = select_model.options[select_model.selectedIndex].value;
+
 	label = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 	if (firstTime == 0) {
-		loadChart(label, data);
+		loadChart(label, data, select_option);
 		firstTime = 1;
 	} else {
 		chart.destroy();
-		loadChart(label, data);
+		loadChart(label, data, select_option);
 	}
 	document.getElementById('chart_box').style.display = "block";
 }

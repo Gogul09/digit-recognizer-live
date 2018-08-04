@@ -11,12 +11,17 @@
 		<div class="demo-container">
 			<h3>Digit Recognizer using TensorFlow.js Demo</h3>
 			<div class="flex-two">
-				<div id="canvas_box" class="canvas-box">
+				<div id="canvas_box_wrapper" class="canvas-box-wrapper">
 					<button id="clear_canvas" class="material-button-pink" onclick="clearCanvas(this.id)">Clear</button>
+					<select id="select_model">
+						<option>MLP</option>
+						<option>CNN</option>
+					</select>
+					<div id="canvas_box" class="canvas-box"></div>
 				</div>
 				<div id="result_box">
 					<button id="predict_canvas" class="material-button-pink" onclick="predict(this.id)">Predict</button>
-					<canvas id="chart_box"></canvas>
+					<canvas id="chart_box" width="100" height="100"></canvas>
 				</div>
 			</div>
 		</div>
