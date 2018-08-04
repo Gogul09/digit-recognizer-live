@@ -27,21 +27,28 @@ body {
   height: auto;
 }
 
-.demo-container {
-  background-color: #3949ab;
+.digit-demo-container {
+  background-color: #4CAF50;
   border-radius: 5px;
   margin: 20px auto;
   width: 680px;
 
   h3 {
     font-size: 15px;
-    background-color: #4dd0e1;
+    background-color: #356937;
     padding: 10px;
+    color: white;
     margin: 0px;
-    border: 1px solid #24a8b9;
+    border: 1px solid #295b2b;
     border-bottom: 0px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+  }
+
+  select {
+    margin-top: 0px;
+    height: 30px;
+    font-size: 12px;
   }
 }
 
@@ -58,22 +65,25 @@ body {
   }
 }
 
-.canvas-box {
+.canvas-box-wrapper {
   display: block !important;
+
 }
 
 .material-button-pink {
-  background-color: #f50057;
-  color: white;
+  background-color: #FFD740;
+  height: 30px;
+  color: black;
   display: block;
   font-family: $font_body;
   font-weight: bold;
   padding: 5px 10px;
   cursor: pointer;
-  border: 1px solid #f50057;
+  border: 1px solid #a58e3a;
   font-size: 12px;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
   margin: 0px auto;
+  border-radius: 5px;
 }
 
 .material-button-pink:focus {
@@ -87,8 +97,7 @@ body {
 #chart_box {
   background-color: white;
   padding: 20px;
-  height: 200px;
-  width: 200px;
+  border-radius: 5px;
   @include mobile {
     padding: 5px;
   }
