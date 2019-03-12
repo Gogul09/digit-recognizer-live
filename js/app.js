@@ -206,7 +206,7 @@ async function loadModel(modelName) {
   model = undefined;
   
   // load the model using a HTTPS request (where you have stored your model files)
-  model = await tf.loadModel("https://gogul09.github.io/models/" + modelName + "/model.json");
+  model = await tf.loadLayersModel("https://gogul09.github.io/models/" + modelName + "/model.json");
   
   console.log("model loaded..");
 }
@@ -227,7 +227,7 @@ function preprocessCanvas(image, modelName) {
 	else if (modelName === "digitrecognizermlp") {
 		
 		// resize the input image to digitrecognizermlp's target size of (784, )
-		let tensor = tf.fromPixels(image)
+		let tensor = tf.browser.fromPixels(image)
 		    .resizeNearestNeighbor([28, 28])
 		    .mean(2)
 		    .toFloat()
@@ -238,7 +238,7 @@ function preprocessCanvas(image, modelName) {
 	// if model is digitrecognizercnn, perform all the preprocessing
 	else if (modelName === "digitrecognizercnn") {
 		// resize the input image to digitrecognizermlp's target size of (1, 28, 28)
-		let tensor = tf.fromPixels(image)
+		let tensor = tf.browser.fromPixels(image)
 		    .resizeNearestNeighbor([28, 28])
 		    .mean(2)
 		    .expandDims(2)
